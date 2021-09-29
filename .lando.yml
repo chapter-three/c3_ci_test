@@ -3,6 +3,10 @@ recipe: drupal8
 config:
   webroot: web
   php: '7.4'
+proxy:
+  appserver:
+    - 'c3-ci-test.lndo.site'
+    - '*.c3-ci-test.lndo.site'
 tooling:
   xdebug-on:
     service: appserver

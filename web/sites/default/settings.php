@@ -30,6 +30,13 @@ include __DIR__ . "/settings.pantheon.php";
  */
 $settings['config_sync_directory'] = dirname(DRUPAL_ROOT) . '/config';
 
+// Local development with Lando.
+if (isset($_ENV['LANDO_INFO'])) {
+  $config['language.negotiation']['url']['domains']['en'] = 'c3-ci-test.lndo.site';
+  $config['language.negotiation']['url']['domains']['es'] = 'es.c3-ci-test.lndo.site';
+  $config['language.negotiation']['url']['domains']['fr'] = 'fr.c3-ci-test.lndo.site';
+}
+
 /**
  * If there is a local settings file, then include it
  */
