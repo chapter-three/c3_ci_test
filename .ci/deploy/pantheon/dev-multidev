@@ -51,8 +51,8 @@ then
   if [[ "$GIT_COMMIT_DESC" == *\[SET-LANG-ES\]* ]]; then
 
     # Set default language.
-    terminus drush $TERMINUS_SITE.$TERMINUS_ENV en custom_lang -y
-    terminus drush $TERMINUS_SITE.$TERMINUS_ENV change:lang es $TERMINUS_ENV-$TERMINUS_SITE.pantheonsite.io
+    terminus drush -- $TERMINUS_SITE.$TERMINUS_ENV -y en custom_lang
+    terminus drush -- $TERMINUS_SITE.$TERMINUS_ENV change:lang es $TERMINUS_ENV-$TERMINUS_SITE.pantheonsite.io
 
     echo "Changed default language to ES."
   fi
