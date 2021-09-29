@@ -1,0 +1,14 @@
+uuid: 5afbb5be-4515-46fc-b7a7-b8e1abc44811
+name: c3-ci-test
+mail: arlina.espinoza@gmail.com
+slogan: ''
+page:
+  403: ''
+  404: ''
+  front: /node
+admin_compact_mode: false
+weight_select_max: 100
+langcode: en
+default_langcode: en
+_core:
+  default_config_hash: yTxtFqBHnEWxQswuWvkjE8mKw2t8oKuCL1q8KnfHuGE
