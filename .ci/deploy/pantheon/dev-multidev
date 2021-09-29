@@ -48,7 +48,7 @@ terminus -n build:env:delete:pr $TERMINUS_SITE --yes
 if [[ $CI_BRANCH != $DEFAULT_BRANCH ]]
 then
   export GIT_COMMIT_DESC=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
-  if [[ "$MESSAGE" == *\[SET-LANG-ES\]* ]]; then
+  if [[ "$GIT_COMMIT_DESC" == *\[SET-LANG-ES\]* ]]; then
 
     # Set default language.
     terminus drush $TERMINUS_SITE.$TERMINUS_ENV cset system.site default_langcode 'es' -y
