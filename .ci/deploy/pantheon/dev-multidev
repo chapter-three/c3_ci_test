@@ -43,3 +43,23 @@ terminus -n secrets:set "$TERMINUS_SITE.$TERMINUS_ENV" token "$GITHUB_TOKEN" --f
 # Delete old multidev environments associated
 # with a PR that has been merged or closed.
 terminus -n build:env:delete:pr $TERMINUS_SITE --yes
+
+# If deploying to a multidev environment, check if a default language change was requested.
+if [[ $CI_BRANCH != $DEFAULT_BRANCH ]]
+then
+  export GIT_COMMIT_DESC=$(git log --format=oneline -n 1 $CIRCLE_SHA1)
+  if [[ "$MESSAGE" == *\[SET-LANG-ES\]* ]]; then
+
+    # Set default language.
+    terminus drush $TERMINUS_SITE.$TERMINUS_ENV cset system.site default_langcode 'es' -y
+
+    # Assign the multidev domain to the new language, and give English domain a different domain.
+    terminus drush $TERMINUS_SITE.$TERMINUS_ENV cset language.negotiation url.domains.es "$TERMINUS_ENV-$TERMINUS_SITE.pantheonsite.io" -y
+    terminus drush $TERMINUS_SITE.$TERMINUS_ENV cset language.negotiation url.domains.en "en.$TERMINUS_ENV-$TERMINUS_SITE.pantheonsite.io" -y
+
+    # English isn't default anymore, so English needs a prefix.
+    terminus drush $TERMINUS_SITE.$TERMINUS_ENV cset language.negotiation url.prefixes.en 'en' -y
+
+    echo "Changed default language to ES."
+  fi
+fi
