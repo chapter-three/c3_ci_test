@@ -1,0 +1,40 @@
+name: c3-ci-test
+recipe: drupal8
+config:
+  webroot: web
+  php: '7.4'
+tooling:
+  xdebug-on:
+    service: appserver
+    description: Enable xdebug for nginx.
+    cmd: docker-php-ext-enable xdebug && pkill -o -USR2 php-fpm
+    user: root
+  xdebug-off:
+    service: appserver
+    description: Disable xdebug for nginx.
+    cmd: >-
+      rm /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && pkill -o -USR2
+      php-fpm
+    user: root
+  testall:
+    description: Run all tests.
+    cmd:
+      - appserver: composer lint
+      - appserver: composer code-sniff
+      - appserver: composer unit-test
+  kickoff:
+    description: Get suggested local settings and config.
+    cmd:
+      - appserver: cp examples/example.drush.yml drush/drush.yml
+      - appserver: >-
+          cp examples/example.settings.local.php
+          web/sites/default/settings.local.php
+      - appserver: >-
+          cp examples/example.services.local.yml
+          web/sites/default/services.local.yml
+#  drupal:
+#    cmd: vendor/bin/drupal
+  drush:
+    service: appserver
+    env:
+      DRUSH_OPTIONS_URI: "https://c3-ci-test.lndo.site"
